@@ -1,0 +1,37 @@
+.actions {
+  .child.options {
+    span {
+      color: var(--danger);
+      text-transform: capitalize;
+      cursor: pointer;
+
+      &.active {
+        border-bottom: 2px solid var(--danger);
+        font-weight: bolder;
+      }
+    }
+  }
+}
+
+
+.parent {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+
+  @media (max-width: 768px) and (orientation: portrait) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  @media (max-width: 768px) and (orientation: landscape),
+  (min-width: 769px) and (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+
+.fa-heart {
+  margin-left: auto;
+  font-size: 1.5rem;
+}

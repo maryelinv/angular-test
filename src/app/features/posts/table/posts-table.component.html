@@ -1,0 +1,25 @@
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Body</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (post of posts; track $index) {
+      <tr>
+        <td>{{ post.id }}</td>
+        <td>{{ post.title }}</td>
+        <td>{{ post.body }}</td>
+        <td>
+          <i class="fa-solid fa-circle-info text-primary mx-2 pointer" (click)="viewPostDetails(post)" title="see info">
+          </i>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
