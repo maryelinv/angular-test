@@ -1,54 +1,46 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import Status from '../../core/enums/status.enum';
 import { Reminder } from '../../core/models/reminder.model';
-import { RemindersService } from '../../core/services/reminders/reminders.service';
-import { paginationChangeEvent } from '../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './reminders.component.html',
   styleUrls: ['./reminders.component.scss']
 })
-export class RemindersComponent implements OnInit {
-  remindersResponse!: Reminder[];
-  selectedReminder?: Reminder;
-  seeAsTable: boolean = false;
-  showAll: boolean = true;
-  loading: boolean = false;
+export class RemindersComponent {
+  reminders!: Reminder[];
 
-  pagination: paginationChangeEvent = {
-    total: 0,
-    currentPage: 1,
-    pageSize: 16
+  constructor() { }
+
+  add(text: string) {
+    let reminder = {
+      id: this.reminders.length > 0 ? this.reminders?.at(-1)?.id! + 1 : 1,
+      text: text,
+      status: Status.pending,
+      createdDate: new Date(),
+      deleted: false
+    };
+    this.reminders.push(reminder);
   }
 
-  constructor(private remindersService: RemindersService) { }
-
-  ngOnInit() {
-    this.getPosts();
+  remove(id: number) {
+    let reminder = this.reminders.find(r => r.id === id)!;
+    if (reminder !== undefined) {
+      const index = this.reminders.indexOf(reminder);
+      if (index > -1) {
+        this.reminders[index].deleted = true;
+      }
+    }
   }
 
-  getPosts() {
-    const { currentPage, pageSize } = this.pagination;
-    this.loading = true;
-    this.remindersService.getReminders(currentPage, pageSize)
-      .subscribe({
-        next: (response) => {
-          this.remindersResponse = response;
-          this.pagination.total = response.length;
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error(error);
-        }
-      });
+  delete(id: number) {
+    let reminder = this.reminders.find(r => r.id === id)!;
+    if (reminder !== undefined) {
+      const index = this.reminders.indexOf(reminder);
+      if (index > -1) {
+        this.reminders.splice(index, 1);
+      }
+    }
   }
 
-  onPaginationChange(event: paginationChangeEvent) {
-    this.pagination = event;
-    this.getPosts();
-  }
-
-  selectPost(reminder: Reminder) {
-    this.selectedReminder = reminder;
-  }
 }

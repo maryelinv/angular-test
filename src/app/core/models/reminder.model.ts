@@ -1,6 +1,9 @@
 import Status from "../enums/status.enum";
 
 export interface Reminder {
-  name: string;
+  id: number;
+  text: string;
   status: Status;
+  createdDate: Date;
+  deleted: boolean;
 }
