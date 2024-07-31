@@ -11,6 +11,10 @@ export class RemindersComponent implements OnInit {
   reminders: Reminder[];
   @ViewChild('reminderText') reminderInputRef: ElementRef<HTMLInputElement> = null!;
 
+  sortByDate = (a: Reminder, b: Reminder) => {
+    return a.createdDate.getTime() - b.createdDate.getTime();
+  }
+
   constructor() {
     this.reminders = [];
   }
@@ -63,7 +67,9 @@ export class RemindersComponent implements OnInit {
   }
 
   save(): void {
-    localStorage.setItem('reminders', JSON.stringify(this.reminders));
+    localStorage.setItem('reminders', JSON.stringify(this.reminders.sort((a: Reminder, b: Reminder) => {
+      return a.createdDate.getTime() - b.createdDate.getTime();
+    })));
   }
 
   update(reminders: Reminder[]) {
