@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import Status, { StatusDesc } from '../../../core/enums/status.enum';
 import { Reminder } from '../../../core/models/reminder.model';
 
 @Component({
@@ -47,8 +48,20 @@ export class ReminderCardComponent implements OnInit {
   update() {
     this.remindersUpdate.emit(this.reminders);
   }
+  changeStatus(id: number, status: Status): void {
+    const reminder = this.reminders?.find(item => item.id == id);
+    if (reminder) {
+      reminder.status = status;
+      this.update();
+      this.save();
+    }
+  }
 
   getReminders(): Reminder[] {
     return JSON.parse(localStorage.getItem('reminders')!);
+  }
+
+  getStatusDesc(status: Status): string {
+    return StatusDesc[status];
   }
 }

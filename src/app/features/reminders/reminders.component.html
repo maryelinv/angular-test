@@ -6,9 +6,10 @@
     </div>
   </div>
 
-  <div class="mt-3">
-    <input type="text" #reminderText placeholder="turn off AC at 5:00 AM!">
-    <button (click)="add(reminderText.value)">Add</button>
+  <div class="mt-3 d-flex justify-content-start gap-3">
+    <input class="form-control" aria-describedby="inputGroup-sizing-sm" type="text" #reminderText
+      placeholder="turn off AC at 5:00 AM!">
+    <button class="btn btn-primary" (click)="add(reminderText.value)">Add</button>
   </div>
 
   <div class="mt-3">

@@ -66,14 +66,6 @@ export class RemindersComponent implements OnInit {
     localStorage.setItem('reminders', JSON.stringify(this.reminders));
   }
 
-  changeStatus(id: number, status: Status): void {
-    const reminder = this.reminders?.find(item => item.id == id);
-    if (reminder) {
-      reminder.status = status;
-      this.save();
-    }
-  }
-
   update(reminders: Reminder[]) {
     this.reminders = [...reminders];
   }
