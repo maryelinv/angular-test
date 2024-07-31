@@ -1,0 +1,27 @@
+<div class="backdrop">
+  <div class="content">
+    <div class="card details-card">
+      <div class="card-body">
+        <div class="close-btn">
+          <i class="fa-solid fa-times fa-2x pointer text-{{ primaryTypeColor }}" (click)="onClose()"></i>
+        </div>
+
+        <div class="title">
+          <span class="name mx-1 text-{{ primaryTypeColor }}">
+            {{ post.title | titlecase }}
+          </span>
+          <div class="badges mt-1">
+            {{ post.title |titlecase }}
+          </div>
+        </div>
+        <hr>
+
+        <div class="stats mx-1 my-2">
+          <p>
+            {{post.body}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
