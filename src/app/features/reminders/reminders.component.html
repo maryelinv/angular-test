@@ -1,0 +1,40 @@
+<div class="container py-3">
+  <div class="search d-flex justify-content-start gap-5 align-items-center">
+    <div class="child d-flex">
+      <img alt="brain" src="assets/images/envelop.svg" width="30" class="pointer">
+      <h4 class="title mx-2">Reminders Feed</h4>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <input type="text" #reminderText placeholder="turn off AC at 5:00 AM!">
+    <button (click)="add(reminderText.value)">Add</button>
+  </div>
+
+  <div class="mt-3">
+    @if (reminders) {
+    <div class="parent mt-3">
+      @for (reminder of reminders; track $index) {
+      <div *ngIf="!reminder.deleted" class="child">
+        <app-reminder-card [reminder]="reminder" [save]="save" (remindersUpdate)="update($event)">
+        </app-reminder-card>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <div *ngIf="showDeleted()" class="mt-3">
+    @if (reminders) {
+    <div class="parent mt-3">
+      <h5 class="title mx-2"> Removed Reminders</h5>
+      @for (reminder of reminders; track $index) {
+      <div *ngIf="reminder.deleted" class="child">
+        <app-reminder-card [reminder]="reminder" [save]="save" (remindersUpdate)="update($event)">
+        </app-reminder-card>
+      </div>
+      }
+    </div>
+    }
+  </div>
+</div>

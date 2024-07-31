@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Post } from '../../core/models/post.model';
 import { PostsService } from '../../core/services/posts/posts.service';
-import { paginationChangeEvent } from '../../shared/components/pagination/pagination.component';
+import { PaginationChangeEvent } from '../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +15,7 @@ export class PostsComponent implements OnInit {
   showAll: boolean = true;
   loading: boolean = false;
 
-  pagination: paginationChangeEvent = {
+  pagination: PaginationChangeEvent = {
     total: 0,
     currentPage: 1,
     pageSize: 10
@@ -43,7 +43,7 @@ export class PostsComponent implements OnInit {
       });
   }
 
-  onPaginationChange(event: paginationChangeEvent) {
+  onPaginationChange(event: PaginationChangeEvent) {
     this.pagination = event;
     this.getPosts();
   }

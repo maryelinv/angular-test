@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import Status from '../../core/enums/status.enum';
 import { Reminder } from '../../core/models/reminder.model';
 
@@ -7,40 +7,78 @@ import { Reminder } from '../../core/models/reminder.model';
   templateUrl: './reminders.component.html',
   styleUrls: ['./reminders.component.scss']
 })
-export class RemindersComponent {
-  reminders!: Reminder[];
+export class RemindersComponent implements OnInit {
+  reminders: Reminder[];
+  @ViewChild('reminderText') reminderInputRef: ElementRef<HTMLInputElement> = null!;
 
-  constructor() { }
+  constructor() {
+    this.reminders = [];
+  }
+
+  ngOnInit(): void {
+    this.getReminders();
+  }
+
+  getReminders() {
+    const storedReminders = localStorage.getItem('reminders')!;
+    if (this.reminders) {
+      this.reminders = JSON.parse(storedReminders);
+    }
+  }
 
   add(text: string) {
-    let reminder = {
-      id: this.reminders.length > 0 ? this.reminders?.at(-1)?.id! + 1 : 1,
-      text: text,
-      status: Status.pending,
-      createdDate: new Date(),
-      deleted: false
-    };
-    this.reminders.push(reminder);
+    if (text.trim() !== '') {
+      let reminder: Reminder = {
+        id: this.reminders && this.reminders?.length > 0 ? this.reminders.at(-1)?.id! + 1 : 1,
+        text: text.trim(),
+        status: Status.pending,
+        createdDate: new Date(),
+        deleted: false
+      };
+      this.reminders = [...(this.reminders ? this.reminders : []), reminder];
+      this.reminderInputRef.nativeElement.value = '';
+      this.save();
+    }
   }
 
   remove(id: number) {
-    let reminder = this.reminders.find(r => r.id === id)!;
-    if (reminder !== undefined) {
-      const index = this.reminders.indexOf(reminder);
-      if (index > -1) {
-        this.reminders[index].deleted = true;
-      }
+    let reminder = this.reminders?.find(r => r.id == id)!;
+    if (reminder) {
+      reminder.deleted = true;
+      this.save();
+    }
+  }
+
+  restore(id: number) {
+    let reminder = this.reminders?.find(r => r.id == id)!;
+    if (reminder) {
+      reminder.deleted = false;
+      this.save();
     }
   }
 
   delete(id: number) {
-    let reminder = this.reminders.find(r => r.id === id)!;
-    if (reminder !== undefined) {
-      const index = this.reminders.indexOf(reminder);
-      if (index > -1) {
-        this.reminders.splice(index, 1);
-      }
+    this.reminders = this.reminders.filter(r => r.id !== id);
+    this.save();
+  }
+
+  save(): void {
+    localStorage.setItem('reminders', JSON.stringify(this.reminders));
+  }
+
+  changeStatus(id: number, status: Status): void {
+    const reminder = this.reminders?.find(item => item.id == id);
+    if (reminder) {
+      reminder.status = status;
+      this.save();
     }
   }
 
+  update(reminders: Reminder[]) {
+    this.reminders = [...reminders];
+  }
+
+  showDeleted(): boolean {
+    return this.reminders.some(reminder => reminder.deleted);
+  }
 }

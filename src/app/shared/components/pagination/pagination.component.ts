@@ -15,7 +15,7 @@ export class PaginationComponent implements OnChanges {
   @Input() pageSize: number = 10;
   @Output() pageSizeChange = new EventEmitter<number>();
 
-  @Output() paginationChange = new EventEmitter<paginationChangeEvent>();
+  @Output() paginationChange = new EventEmitter<PaginationChangeEvent>();
 
   totalPages: number = 0;
   pagesArr: number[] = [];
@@ -61,7 +61,7 @@ export class PaginationComponent implements OnChanges {
   }
 }
 
-export interface paginationChangeEvent {
+export interface PaginationChangeEvent {
   total: number;
   currentPage: number;
   pageSize: number;
